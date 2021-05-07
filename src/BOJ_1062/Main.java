@@ -6,40 +6,79 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+    static boolean[][] list;
+    static boolean[] wordList;
+    static int N, K;
+    static int answer;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-        int[][] strList = new int[N][26];
-        int[] strCount = new int[N];
+        list = new boolean[N][26];
+        wordList = new boolean[26];
+
+        answer = 0;
 
         for(int i = 0; i < N; i++){
             String str = br.readLine();
             for(int j = 0; j < str.length(); j++){
-                if(strList[i][str.charAt(j) - 'a'] != 1){
-                    strList[i][str.charAt(j) - 'a'] = 1;
-                    strCount[i]++;
+                list[i][str.charAt(j) - 'a'] = true;
+                wordList[str.charAt(j) - 'a'] = true;
+            }
+        }
+
+        if(K < 5){
+            System.out.println(0);
+        }else{
+            solution();
+
+            System.out.println(answer);
+        }
+    }
+
+    static void solution(){
+
+        boolean[] usedWord = new boolean[26];
+        usedWord['a' - 'a'] = true;
+        usedWord['n' - 'a'] = true;
+        usedWord['t' - 'a'] = true;
+        usedWord['c' - 'a'] = true;
+        usedWord['i' - 'a'] = true;
+
+        makeCombination(0, 5, usedWord);
+    }
+
+    static void makeCombination(int start, int count, boolean[] word){
+        if(count == K){
+            answer = Math.max(answer, countWord(word));
+
+            return;
+        }
+
+        for(int i = start; i < 26; i++){
+            if(!word[i]){
+                word[i] = true;
+                makeCombination(i + 1, count + 1, word);
+                word[i] = false;
+            }
+        }
+    }
+
+    static int countWord(boolean[] word){
+        int count = 0;
+        for(int i = 0; i < N; i++){
+            boolean flag = true;
+            for(int j = 0; j < 26; j++){
+                if(list[i][j] && !word[j]) {
+                    flag = false;
+                    break;
                 }
             }
+            if(flag) count++;
         }
 
-        int[] array = new int[26];
-        array['a' - 'a'] = 1;
-        array['n' - 'a'] = 1;
-        array['t' - 'a'] = 1;
-        array['i' - 'a'] = 1;
-        array['c' - 'a'] = 1;
-        int count = M - 5;
-
-        if(M >= 5){
-            for(int i = 0; i < N; i++){
-
-
-            }
-        }else{
-            System.out.println(0);
-        }
+        return count;
     }
 }
