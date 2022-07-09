@@ -49,7 +49,7 @@ public class Main {
 
     public static void main(String[] args) {
         solution(5, new int[]{2, 1, 2, 6, 2, 4, 3, 3});
-        solution(4, new int[]{4,4,4,4,4});
-        solution(4, new int[]{1});
+        solution(4, new int[]{4,5,4,4,4});
+        solution(4, new int[]{4});
     }
 }
